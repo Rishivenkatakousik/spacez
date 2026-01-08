@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lexend_Deca } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./providers/AuthProvider";
+import { Toaster } from "sonner";
 
 const lexend = Lexend_Deca({
   variable: "--font-lexend-deca",
@@ -22,9 +23,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lexend.variable} antialiased`}>
         <AuthProvider>
-          <div className="max-w-[390px] w-full min-h-screen mx-auto">
+          <div className="max-w-97.5 w-full min-h-screen mx-auto">
             {children}
           </div>
+
+          {/* Sonner toaster */}
+          <Toaster position="top-center" />
         </AuthProvider>
       </body>
     </html>

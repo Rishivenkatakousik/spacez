@@ -1,10 +1,12 @@
 "use client";
+
 import Image from "next/image";
 import cards from "@/public/images/cards.png";
 import qr from "@/public/images/qr.png";
 import { useAuth } from "../providers/AuthProvider";
 import { coupons as couponsData, bonusGiftCards,paymentOffers } from "@/constants";
 import { FiCopy } from "react-icons/fi";
+import { toast } from "sonner";
 import React from "react";
 
 type Coupon = {
@@ -33,7 +35,7 @@ function SignedOutExtras() {
               <p className="text-xs text-gray-600 mb-3">of trending brands</p>
             </div>
 
-            <div className="absolute -right-2 -top-1 z-10 w-[105px] h-[91px] pointer-events-none">
+            <div className="absolute -right-2 -top-1 z-10 w-26.5 h-23 pointer-events-none">
               <Image
                 src={cards}
                 alt="gift cards"
@@ -46,45 +48,40 @@ function SignedOutExtras() {
           </div>
         </div>
 
-        <button className="mt-2 w-full bg-[#C56A3A] text-white py-2 rounded text-sm">
+        <button
+          onClick={() => toast.success("Gift cards claimed")}
+          className="mt-2 w-full bg-[#C56A3A] text-white py-2 rounded text-sm"
+        >
           Claim gift cards »
         </button>
       </div>
 
       {/* Payment Offers */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">
-          Payment offers:
-        </h3>
+        <h3 className="text-sm font-semibold text-gray-900 mb-3">Payment offers:</h3>
 
         <div className="bg-[#FEF8F6] relative rounded-sm p-2 overflow-visible">
           <div className="flex items-center gap-4">
             <div className="flex-1 min-w-0 pr-4">
-              <p className="text-sm text-gray-700 mb-1">
-                Save more on your bookings
-              </p>
+              <p className="text-sm text-gray-700 mb-1">Save more on your bookings</p>
               <p className="text-2xl font-extrabold text-[#9A5632] leading-snug">
                 upto <span className="text-3xl">15% Off</span>
               </p>
-              <p className="text-sm font-semibold text-[#9A5632]">
-                on select payment methods
-              </p>
+              <p className="text-sm font-semibold text-[#9A5632]">on select payment methods</p>
             </div>
 
-            <div className="absolute right-2 z-20 w-[71px] h-[60px] pointer-events-none">
-              <Image
-                src={qr}
-                alt="payment promo"
-                width={71}
-                height={60}
-                className="object-contain"
-                priority
-              />
+            <div className="h-15 w-15 rounded-md bg-[#f7ece5]"></div>
+
+            <div className="absolute right-2 z-20 w-18 h-15 pointer-events-none">
+              <Image src={qr} alt="payment promo" width={71} height={60} className="object-contain" priority />
             </div>
           </div>
         </div>
 
-        <button className="mt-2 w-full bg-[#C56A3A] text-white py-2 rounded text-sm">
+        <button
+          onClick={() => toast.success("Payment offers unlocked")}
+          className="mt-2 w-full bg-[#C56A3A] text-white py-2 rounded text-sm"
+        >
           Unlock offers »
         </button>
       </div>
@@ -135,13 +132,17 @@ function SignedInCoupons() {
                 <Image src={c.logo} alt={c.code} width={36} height={36}/>
               <h4 className="text-sm font-semibold text-gray-800">{c.code}</h4>
               </div>
-              <button className="flex items-center gap-2 text-sm text-[#9A5632] font-medium">
+              <button 
+                onClick={() => toast.success(`${c.code} Gift card claimed`)}
+               className="flex items-center gap-2 text-sm text-[#9A5632] font-medium cursor-pointer">
                 Collect
               </button>
             </div>
             <p className="text-xs text-gray-600">{c.condition}</p>
             <div className="mt-3 border-t border-[#EEE6E2] pt-3">
-              <button className="text-xs text-[#9A5632] font-medium">
+              <button 
+              onClick={() => toast.success("Read more")}
+               className="text-xs text-[#9A5632] font-medium">
                 Read more
               </button>
             </div>
@@ -184,14 +185,21 @@ function SignedInCoupons() {
 
           <div className="flex-1 p-3 bg-[#FDF9F7]">
             <div className="flex justify-between items-start mb-1">
+              <div className="flex items-center gap-2 rounded">
+                <Image src={c.logo} alt={c.bank} width={36} height={36}/>
               <h4 className="text-sm font-semibold text-gray-800">{c.bank}</h4>
-              <button className="flex items-center gap-2 text-sm text-[#9A5632] font-medium">
+              </div>
+              <button 
+                onClick={() => toast.success(`${c.bank} Gift card claimed`)}
+              className="flex items-center gap-2 text-sm text-[#9A5632] font-medium">
                 Collect
               </button>
             </div>
             <p className="text-xs text-gray-600">{c.condition}</p>
             <div className="mt-3 border-t border-[#EEE6E2] pt-3">
-              <button className="text-xs text-[#9A5632] font-medium">
+              <button
+              onClick={() => toast.success("Read more")}
+               className="text-xs text-[#9A5632] font-medium">
                 Read more
               </button>
             </div>
@@ -205,9 +213,5 @@ function SignedInCoupons() {
 export default function OffersExtras(): React.ReactNode {
   const { signedIn } = useAuth();
 
-  return (
-    <section className="px-6 space-y-6 bg-white">
-      {signedIn ? <SignedInCoupons /> : <SignedOutExtras />}
-    </section>
-  );
+  return <section className="px-6 space-y-6 bg-white">{signedIn ? <SignedInCoupons /> : <SignedOutExtras />}</section>;
 }

@@ -4,6 +4,7 @@ import Image from "next/image";
 import logo from "@/public/images/logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "@/app/providers/AuthProvider";
+import { toast } from "sonner";
 
 export default function OffersTopSection() {
   const { signedIn, setSignedIn } = useAuth();
@@ -11,7 +12,7 @@ export default function OffersTopSection() {
   return (
     <>
       {/* center fixed header using left-1/2 + transform */}
-      <section className="fixed left-1/2 -translate-x-1/2 top-0 z-30 shadow-md w-full max-w-[390px]">
+      <section className="fixed left-1/2 -translate-x-1/2 top-0 z-30 shadow-md w-full max-w-97.5">
         {/* center the fixed header to the page max width */}
         <div className="w-full mx-auto bg-white">
           {/* Header */}
@@ -19,7 +20,7 @@ export default function OffersTopSection() {
             <div className="flex items-center">
               <Image src={logo} alt="spacez logo" width={120} height={32} />
             </div>
-            <button className="text-2xl text-[#9A5632]">
+            <button className="text-2xl text-[#9A5632]" aria-label="menu">
               <GiHamburgerMenu />
             </button>
           </div>
@@ -34,7 +35,10 @@ export default function OffersTopSection() {
 
             {!signedIn && (
               <button
-                onClick={() => setSignedIn(true)}
+                onClick={() => {
+                  setSignedIn(true);
+                  toast.success("Signed in");
+                }}
                 className="w-full bg-[#C56A3A] text-white py-3 rounded-sm font-medium text-base cursor-pointer"
               >
                 Sign in
@@ -50,6 +54,7 @@ export default function OffersTopSection() {
                 className={`flex-1 py-3 text-sm font-medium ${
                   index === 1 ? "border-b-2" : "text-gray-500"
                 }`}
+                onClick={() => toast.success(`${tab} selected`)}
               >
                 {tab}
               </button>
@@ -61,9 +66,7 @@ export default function OffersTopSection() {
       {/* spacer (matches fixed header height) so page content doesn't go under the fixed header */}
       <div
         aria-hidden
-        className={`max-w-[390px] w-full mx-auto ${
-          signedIn ? "h-[210px]" : "h-[270px]"
-        }`}
+        className={`max-w-97.5 w-full mx-auto ${signedIn ? "h-52.5" : "h-67.5"}`}
       />
     </>
   );

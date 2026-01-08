@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { FiCopy } from "react-icons/fi";
 import { coupons as couponsData } from "@/constants";
-
+import { toast } from "sonner";
 
 type Coupon = {
   id: number;
@@ -13,7 +13,6 @@ type Coupon = {
 };
 
 export default function OffersContent(): React.ReactNode {
-  
   const coupons = couponsData as Coupon[];
   const [copied, setCopied] = useState<Record<number, boolean>>({});
 
@@ -21,9 +20,10 @@ export default function OffersContent(): React.ReactNode {
     try {
       await navigator.clipboard.writeText(code);
       setCopied((s) => ({ ...s, [id]: true }));
+      toast.success(`${code} copied`);
       setTimeout(() => setCopied((s) => ({ ...s, [id]: false })), 1800);
     } catch {
-      // ignore
+      toast.error("Copy failed");
     }
   };
 
@@ -85,7 +85,10 @@ export default function OffersContent(): React.ReactNode {
                 </p>
 
                 <div className="mt-3 border-t border-[#EEE6E2] pt-3">
-                  <button className="text-xs text-[#9A5632] font-medium">
+                  <button
+                    onClick={() => toast.success("Read more")}
+                    className="text-xs text-[#9A5632] font-medium"
+                  >
                     Read more
                   </button>
                 </div>

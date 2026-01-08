@@ -1,9 +1,13 @@
+"use client";
+
 import React from "react";
 import { AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
 import { IoIosSearch } from "react-icons/io";
 import { BiSolidOffer } from "react-icons/bi";
 import { IoCompassOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
+import { toast } from "sonner";
+
 
 
 type NavItem = {
@@ -22,13 +26,14 @@ const navItems: NavItem[] = [
 
 export default function BottomNav(): React.ReactNode {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 mx-auto max-w-[390px] bg-white border-t border-gray-200 flex justify-around py-6 text-xs">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 mx-auto max-w-97.5 bg-white border-t border-gray-200 flex justify-around py-6 text-xs">
       {navItems.map(({ key, label, Icon }) => {
         const isActive = key === "offers";
         return (
           <button
             key={key}
             aria-label={label}
+            onClick={() => toast(`${label} clicked`, { icon: "✔️" })}
             className={`flex flex-col items-center gap-1.5 text-xs focus:outline-none ${
               isActive ? "text-[#C56A3A]" : "text-gray-500"
             }`}
